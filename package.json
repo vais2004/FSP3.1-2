@@ -1,0 +1,17 @@
+{
+  "name": "fsp3.1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "install": "concurrently \"npm i --prefix oauth-server\" \"npm i --prefix oauth-frontend\"",
+    "dev": "concurrently \"npm start --prefix oauth-server\" \"npm run dev --prefix oauth-frontend\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
