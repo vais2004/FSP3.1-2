@@ -2,10 +2,13 @@ const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
 require("dotenv").config();
+const { setSecureCookie } = require("./services/index.js");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 app.use(cors());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send(`<h1>Welcome to OAuth API Server.</h1>`);
@@ -33,7 +36,8 @@ app.get("/auth/github/callback", async (req, res) => {
       { headers: { Accept: "application/json" } }
     );
     const accessToken = tokenResponse.data.access_token;
-    res.cookie("access_token", accessToken);
+    //res.cookie("access_token", accessToken);
+    setSecureCookie(res, accessToken);
     return res.redirect(`${process.env.FRONTEND_URL}/v1/profile/github`);
   } catch (error) {
     res.status(500).json(error);
@@ -68,12 +72,13 @@ app.get("/auth/google/callback", async (req, res) => {
       },
       {
         headers: {
-          "Content-Type": "application/x-www-form-urlcoded",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       }
     );
     accessToken = tokenResponse.data.access_token;
-    res.cookie("access_token", accessToken);
+    //res.cookie("access_token", accessToken);
+    setSecureCookie(res, accessToken);
     return res.redirect(`${process.env.FRONTEND_URL}/v1/profile/google`);
   } catch (error) {
     console.error(error);
